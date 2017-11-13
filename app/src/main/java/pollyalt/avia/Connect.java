@@ -40,7 +40,7 @@ public class Connect {
         in.close();
 
         con.disconnect();
-        return response.toString().replace('&', ' ');
+        return response.toString();
     }
 
 
