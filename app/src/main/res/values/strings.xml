@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Avia</string>
+    
+    <string name="FromText">From</string>
+    <string name="WhereText">Where</string>
+    <string name="WhenText">When</string>
+    <string name="month">Whole month</string>
+    <string name="GetBack">Back</string>
 </resources>

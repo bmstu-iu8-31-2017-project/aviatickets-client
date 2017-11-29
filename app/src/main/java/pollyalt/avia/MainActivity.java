@@ -2,50 +2,56 @@ package pollyalt.avia;
 
 
 import android.os.AsyncTask;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.content.Intent;
+import android.widget.CheckBox;
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
+import android.widget.DatePicker;
+
+import java.util.Calendar;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import java.util.Map;
-import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity  {
+
+    Calendar myCalendar = Calendar.getInstance();
+    EditText From;
+    EditText Where;
+    EditText WhenT;
+    ImageButton Look;
+    CheckBox Month;
+    String When = new String();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        ImageButton Look = (ImageButton) findViewById(R.id.LookBut);
+        From = (EditText) findViewById(R.id.FromText);
+        Where = (EditText) findViewById(R.id.WhereText);
+        WhenT = (EditText)findViewById(R.id.WhenText);
+        Month = (CheckBox) findViewById(R.id.month);
+        Look = (ImageButton) findViewById(R.id.LookBut);
 
         Look.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                EditText From = (EditText) findViewById(R.id.FromText);
-                EditText Where = (EditText) findViewById(R.id.WhereText);
-                EditText When = (EditText) findViewById(R.id.WhenText);
-                String Froms = From.getText().toString();
-                String Wheres = Where.getText().toString();
-                String Whens = When.getText().toString();
-                String [] req = new String[]{Froms, Wheres, Whens};
+                if(Month.isChecked())
+                {
+                    When = When.substring(0, When.lastIndexOf('-'));
+                    When += '%';
+                }
+                String [] req = new String[]
+                        {From.getText().toString(), Where.getText().toString(), When};
                 Handle thr = new Handle();
                 try
                 {
@@ -55,11 +61,10 @@ public class MainActivity extends AppCompatActivity {
                 {
                     //
                 }
-                //  pb.setVisibility(ProgressBar.VISIBLE);
-                // pb.setVisibility(ProgressBar.INVISIBLE);
                 try{
-                    if(thr.get() != "0")
-                        launchActivity(thr.get());
+                    String get = thr.get();
+                    if(get != "0")
+                        launchActivity(get);
                 }
                 catch (Exception e)
                 {
@@ -73,16 +78,29 @@ public class MainActivity extends AppCompatActivity {
                             });
                     alertDialog.show();
                 }
-             //  String str = "Moscow&Pregue&24.01&12:20&R3444|Vena&London&7.9&13:19&YO90|" +
-              //         "Moscow&Pregue&24.01&12:20&R3444|Vena&London&7.9&13:19&YO90|";
-             //  launchActivity(str);
             }
         });
 
     }
 
 
+    public void setDate(View view)
+    {
+        OnDateSetListener date = new OnDateSetListener() {
 
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                When = Integer.toString(year) +  "-" + Integer.toString(monthOfYear + 1) + "-"
+                        + Integer.toString(dayOfMonth);
+                WhenT.setText(When);
+            }
+        };
+        new DatePickerDialog(MainActivity.this, date,
+                myCalendar.get(Calendar.YEAR),
+                myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+
+    }
     private void launchActivity(String extra) {
 
         Intent intent = new Intent(this, ResultActivity.class);
@@ -92,19 +110,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     private class Handle extends AsyncTask<String, Void, String> {
-   //     ProgressBar pb = (ProgressBar) findViewById(R.id.progress);
-        @Override
+       @Override
         protected void onPreExecute() {
             super.onPreExecute();
-     //       pb.setVisibility(ProgressBar.VISIBLE);
-
         }
 
         @Override
         protected String doInBackground(String... arg) {
 
            Connect con = new Connect();
-            String ret = new String();
+            String ret;
             try {
                 ret = con.ConnectToServer(arg);
             }
@@ -115,10 +130,6 @@ public class MainActivity extends AppCompatActivity {
             return ret;
         }
 
-   //     @Override
-   //     protected void onProgressUpdate(Integer... values) {
-  //          pb.setProgress(values[0]);
-   //     }
 
         @Override
         protected void onPostExecute(String result) {
@@ -141,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
 
     private String getPostDataString(String[] params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
-        boolean first = true;
         for(String entry : params){
             result.append("&");
             result.append(URLEncoder.encode(entry, "UTF-8"));

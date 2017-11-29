@@ -8,49 +8,56 @@
 
     <EditText
         android:id="@+id/FromText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
-        android:inputType="text"
-        android:hint="From" />
+        android:hint="@string/FromText"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/WhereText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="106dp"
+        android:layout_marginTop="86dp"
+        android:hint="@string/WhereText"
         android:ems="10"
-        android:inputType="text"
-        android:hint="Where"/>
+        android:inputType="text"/>
 
     <EditText
         android:id="@+id/WhenText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="176dp"
+        android:layout_marginTop="156dp"
         android:ems="10"
-        android:inputType="text"
-        android:hint = "When" />
+        android:hint="@string/WhenText"
+        android:clickable="true"
+        android:onClick="setDate"/>
+
 
 
 
     <ImageButton
         android:id="@+id/LookBut"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:background="@color/colorPrimaryDark"
         app:srcCompat="@android:drawable/ic_menu_search"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:contentDescription="" />
+
+
+    <CheckBox
+        android:id="@+id/month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/month"
+        android:layout_marginTop="216dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 
 
 

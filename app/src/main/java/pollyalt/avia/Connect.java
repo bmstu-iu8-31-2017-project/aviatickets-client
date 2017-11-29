@@ -3,24 +3,20 @@ package pollyalt.avia;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.io.BufferedInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.io.InputStream;
-import javax.net.ssl.HttpsURLConnection;
 
 
 
 public class Connect {
-   // String url = "http://192.168.1.35:8080";
-  // String url = "http://10.50.1.189:8082";
-   String url = "http://0.tcp.ngrok.io:14666";
+    String url = "http://192.168.1.35:8080";
+    //String url = "https://whispering-headland-13430.herokuapp.com";
     public String ConnectToServer(String... request)throws Exception
     {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-        con.setRequestMethod("POST");
+        con.setRequestMethod("GET");
 
         String urlParameters = request[0];
         con.setDoOutput(true);
