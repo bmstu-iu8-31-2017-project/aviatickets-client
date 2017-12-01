@@ -48,17 +48,4 @@
         android:contentDescription="" />
 
 
-    <CheckBox
-        android:id="@+id/month"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:text="@string/month"
-        android:layout_marginTop="216dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-
-
-
 </RelativeLayout>

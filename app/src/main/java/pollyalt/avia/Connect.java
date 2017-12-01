@@ -12,7 +12,7 @@ import java.net.URL;
 
 public class Connect {
     //String url = "http://192.168.1.35:8080";
-    String url = "https://whispering-headland-13430.herokuapp.com";
+    private String url = "https://whispering-headland-13430.herokuapp.com";
 
     /**
      * Метод подключения к серверу, отправки запроса и получения данных с сервера

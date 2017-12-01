@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.content.Intent;
-import android.widget.CheckBox;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -22,7 +21,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 /**
- * Операция(Activity) для создания главного ока
+ * Операция(Activity) для создания главного окна
  */
 public class MainActivity extends AppCompatActivity  {
     Calendar myCalendar = Calendar.getInstance();
@@ -30,8 +29,7 @@ public class MainActivity extends AppCompatActivity  {
     EditText Where;
     EditText WhenT;
     ImageButton Look;
-    CheckBox Month;
-    String When = new String();
+    String When;
 
     /**
      * Метод для создания окна и обработки данных
@@ -45,18 +43,13 @@ public class MainActivity extends AppCompatActivity  {
         From = (EditText) findViewById(R.id.FromText);
         Where = (EditText) findViewById(R.id.WhereText);
         WhenT = (EditText)findViewById(R.id.WhenText);
-        Month = (CheckBox) findViewById(R.id.month);
         Look = (ImageButton) findViewById(R.id.LookBut);
 
         Look.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                if(Month.isChecked())
-                {
-                    When = When.substring(0, When.lastIndexOf('-'));
-                    When += '%';
-                }
+
                 String [] req = new String[]
                         {From.getText().toString(), Where.getText().toString(), When};
                 Handle thr = new Handle();

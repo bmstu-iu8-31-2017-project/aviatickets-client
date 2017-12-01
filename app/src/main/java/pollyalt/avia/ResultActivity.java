@@ -58,15 +58,20 @@ public class ResultActivity extends ListActivity{
             int pos = str.indexOf("|");
             if(pos != -1)
             {
-                list.add(str.substring(0, pos - 1).replace('&', ' '));
+                list.add(str.substring(0, pos).replace(" ", "").replace("&", " - "));
                 if (pos != str.length() - 1)
                     str = str.substring(pos + 1);
                 else str = "";
             }
+            else str = "";
         }
         if(list.isEmpty())
         {
             list.add("Sorry! No such flights on this period:(");
+        }
+        else {
+            list.add(0, "Flight num - Date - Time  - Price \nDeparture - Destination");
+            list.add(1, "\n");
         }
         return list;
     }
