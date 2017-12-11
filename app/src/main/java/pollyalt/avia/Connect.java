@@ -5,13 +5,13 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 /**
  * Класс для создания подключения к серверу
  */
 
 public class Connect {
     //String url = "http://192.168.1.35:8080";
+   // String url = "http://172.20.10.2:8080";
     private String url = "https://whispering-headland-13430.herokuapp.com";
 
     /**

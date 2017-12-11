@@ -1,0 +1,49 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+        <TextView
+            android:layout_column="0"
+            android:text="@string/Flight"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:textSize="18sp"
+            >
+        </TextView>
+        <TextView
+            android:layout_column="1"
+            android:text="@string/Date"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:textSize="18sp"
+            >
+        </TextView>
+        <TextView
+            android:layout_column="2"
+            android:text="@string/Time"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:textSize="18sp"
+            >
+        </TextView>
+        <TextView
+            android:layout_column="3"
+            android:text="@string/Price"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:textSize="18sp"
+            >
+        </TextView>
+    </TableRow>
+
+
+</TableLayout>

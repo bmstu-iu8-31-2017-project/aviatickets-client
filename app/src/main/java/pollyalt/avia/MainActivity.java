@@ -15,7 +15,6 @@ import android.widget.DatePicker;
 import java.util.Calendar;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -24,12 +23,13 @@ import android.content.DialogInterface;
  * Операция(Activity) для создания главного окна
  */
 public class MainActivity extends AppCompatActivity  {
-    Calendar myCalendar = Calendar.getInstance();
-    EditText From;
-    EditText Where;
-    EditText WhenT;
-    ImageButton Look;
-    String When;
+    private Calendar myCalendar;
+    private EditText From;
+    private EditText Where;
+    private EditText WhenT;
+    private ImageButton Look;
+    private String When = new String();
+    private int Year, Month, Day;
 
     /**
      * Метод для создания окна и обработки данных
@@ -45,31 +45,31 @@ public class MainActivity extends AppCompatActivity  {
         WhenT = (EditText)findViewById(R.id.WhenText);
         Look = (ImageButton) findViewById(R.id.LookBut);
 
-        Look.setOnClickListener(new View.OnClickListener() {
+       Look.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
 
-                String [] req = new String[]
+                if(From.getText().toString().isEmpty() || Where.getText().toString().isEmpty() || When.isEmpty())
+                AlertD("Wrong format");
+                else
+                {
+                    String[] req = new String[]
                         {From.getText().toString(), Where.getText().toString(), When};
                 Handle thr = new Handle();
-                try
-                {
+                try {
                     thr.execute(getPostDataString(req));
-                }
-                catch(Exception e)
-                {
+                } catch (Exception e) {
                     AlertD("Error");
                 }
-                try{
+                try {
                     String get = thr.get();
-                    if(!get.equals("0"))
+                    if (!get.equals("0"))
                         launchActivity(get);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     AlertD("Error");
                 }
+            }
             }
         });
 
@@ -82,12 +82,18 @@ public class MainActivity extends AppCompatActivity  {
      */
     public void setDate(View view)
     {
+        if(When.isEmpty())
+            myCalendar = Calendar.getInstance();
+        else
+            myCalendar.set(Year, Month, Day);
         OnDateSetListener date = new OnDateSetListener() {
-
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                When = Integer.toString(year) +  "-" + Integer.toString(monthOfYear + 1) + "-"
-                        + Integer.toString(dayOfMonth);
+                Year = year;
+                Month = monthOfYear;
+                Day = dayOfMonth;
+                When = Integer.toString(Year) +  "-" + Integer.toString(Month + 1) + "-"
+                        + Integer.toString(Day);
                 WhenT.setText(When);
             }
         };
@@ -107,10 +113,6 @@ public class MainActivity extends AppCompatActivity  {
      * Класс служит для создания асинхронного потока для подключения к серверу
      */
     private class Handle extends AsyncTask<String, Void, String> {
-       @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         /**
          * Метод служит для создания подключения
@@ -149,13 +151,12 @@ public class MainActivity extends AppCompatActivity  {
      * @throws UnsupportedEncodingException
      */
     private String getPostDataString(String[] params) throws UnsupportedEncodingException {
-        StringBuilder result = new StringBuilder();
-        for(String entry : params){
-            result.append("&");
-            result.append(URLEncoder.encode(entry, "UTF-8"));
-        }
-
-        return result.toString();
+        String jStr = "{"
+                + "\"from\": \"" + params[0] + "\","
+                + "\"where\": \"" + params[1] + "\","
+                + "\"when\" : \"" + params[2] + "\""
+                + "}";
+        return jStr;
     }
 
     /**
