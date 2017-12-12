@@ -30,7 +30,6 @@ public class ResultActivity extends Activity {
 
     /**
      * Метод для создания окна и вывода данных
-     *
      * @param savedInstanceState
      */
     @Override
@@ -79,10 +78,9 @@ public class ResultActivity extends Activity {
     }
 
     /**
-     * Метод разделяет полученные данные
-     *
+     * Метод сериализации строки в JSON объекты
      * @param str Полученная строка с сервера
-     * @return ArrayList данных
+     * @return ArrayList JSON объектров
      */
     private ArrayList<JSONObject> Parse(String str) {
         ArrayList<JSONObject> list = new ArrayList<>();
@@ -98,18 +96,20 @@ public class ResultActivity extends Activity {
                 }
                 list.add(jArray.getJSONObject(i));
             }
-        }catch(Exception e) {
+        }catch(Exception e){
             //
         }
         return list;
         }
 
-    private void SetImage(String str)
-    {
+    /**
+     * Метод загрузки изображения
+     * @param str название изображения
+     */
+    private void SetImage(String str) {
         str = str.substring(1);
         int id = getResources().getIdentifier("pollyalt.avia:drawable/" + str, null, null);
         CityImage.setBackgroundResource(id);
     }
-
 }
 

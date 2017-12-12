@@ -10,8 +10,6 @@ import java.net.URL;
  */
 
 public class Connect {
-    //String url = "http://192.168.1.35:8080";
-   // String url = "http://172.20.10.2:8080";
     private String url = "https://whispering-headland-13430.herokuapp.com";
 
     /**
@@ -20,16 +18,10 @@ public class Connect {
      * @return Ответ с сервера
      * @throws Exception
      */
-    public String ConnectToServer(String... request)throws Exception
-    {
+    public String ConnectToServer(String... request)throws Exception {
+        url += request[0];
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        String urlParameters = request[0];
-        con.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(urlParameters);
-        wr.flush();
-        wr.close();
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
@@ -44,6 +36,4 @@ public class Connect {
         con.disconnect();
         return response.toString();
     }
-
-
 }

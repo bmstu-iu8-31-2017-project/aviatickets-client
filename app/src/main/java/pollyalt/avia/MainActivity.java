@@ -1,28 +1,23 @@
 package pollyalt.avia;
 
 import android.os.AsyncTask;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.content.Intent;
-
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.widget.DatePicker;
 import java.util.Calendar;
-
-import java.io.UnsupportedEncodingException;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 /**
  * Операция(Activity) для создания главного окна
  */
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
     private Calendar myCalendar;
     private EditText From;
     private EditText Where;
@@ -37,13 +32,13 @@ public class MainActivity extends AppCompatActivity  {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+       super.onCreate(savedInstanceState);
+       setContentView(R.layout.activity_main);
 
-        From = (EditText) findViewById(R.id.FromText);
-        Where = (EditText) findViewById(R.id.WhereText);
-        WhenT = (EditText)findViewById(R.id.WhenText);
-        Look = (ImageButton) findViewById(R.id.LookBut);
+       From = (EditText) findViewById(R.id.FromText);
+       Where = (EditText) findViewById(R.id.WhereText);
+       WhenT = (EditText)findViewById(R.id.WhenText);
+       Look = (ImageButton) findViewById(R.id.LookBut);
 
        Look.setOnClickListener(new View.OnClickListener() {
 
@@ -56,13 +51,9 @@ public class MainActivity extends AppCompatActivity  {
                 {
                     String[] req = new String[]
                         {From.getText().toString(), Where.getText().toString(), When};
-                Handle thr = new Handle();
                 try {
-                    thr.execute(getPostDataString(req));
-                } catch (Exception e) {
-                    AlertD("Error");
-                }
-                try {
+                    Handle thr = new Handle();
+                    thr.execute(StringToRequest(req));
                     String get = thr.get();
                     if (!get.equals("0"))
                         launchActivity(get);
@@ -80,8 +71,7 @@ public class MainActivity extends AppCompatActivity  {
      * Инициализирует параметр класса When
      * @param view
      */
-    public void setDate(View view)
-    {
+    public void setDate(View view) {
         if(When.isEmpty())
             myCalendar = Calendar.getInstance();
         else
@@ -102,8 +92,12 @@ public class MainActivity extends AppCompatActivity  {
                 myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
-    private void launchActivity(String extra) {
 
+    /**
+     * Метод запуска окна Результата
+     * @param extra строка запроса
+     */
+    private void launchActivity(String extra) {
         Intent intent = new Intent(this, ResultActivity.class);
         intent.putExtra("out", extra);
         startActivity(intent);
@@ -113,7 +107,6 @@ public class MainActivity extends AppCompatActivity  {
      * Класс служит для создания асинхронного потока для подключения к серверу
      */
     private class Handle extends AsyncTask<String, Void, String> {
-
         /**
          * Метод служит для создания подключения
          * @param arg
@@ -121,7 +114,6 @@ public class MainActivity extends AppCompatActivity  {
          */
         @Override
         protected String doInBackground(String... arg) {
-
            Connect con = new Connect();
             String ret;
             try {
@@ -130,7 +122,6 @@ public class MainActivity extends AppCompatActivity  {
             catch(Exception e) {
                 ret = "0";
             }
-
             return ret;
         }
 
@@ -148,23 +139,17 @@ public class MainActivity extends AppCompatActivity  {
      * Метод для преобразования строки в запрос
      * @param params запрашиваемые параметры
      * @return строка-запрос
-     * @throws UnsupportedEncodingException
      */
-    private String getPostDataString(String[] params) throws UnsupportedEncodingException {
-        String jStr = "{"
-                + "\"from\": \"" + params[0] + "\","
-                + "\"where\": \"" + params[1] + "\","
-                + "\"when\" : \"" + params[2] + "\""
-                + "}";
-        return jStr;
+    private String StringToRequest(String[] params) {
+        String str = "/?from=" + params[0] + "&where=" + params[1] + "&when=" + params[2];
+        return str;
     }
 
     /**
      * Метод для создания сообщений об ошибках
      * @param msg передаваемое сообщение
      */
-    private void AlertD(String msg)
-    {
+    private void AlertD(String msg) {
         AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
         alertDialog.setMessage(msg);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
