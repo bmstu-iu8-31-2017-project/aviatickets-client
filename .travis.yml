@@ -32,8 +32,8 @@ licenses:
 before_install: 
   - "chmod +x gradlew"
   
-  script:
-- "./gradlew clean build connectedCheck -PdisablePreDex --stacktrace"
+ script:
+  - ./gradlew clean assembleDebug -x library:signArchives -PdisablePreDex
 
 before_install:
   - mkdir "$ANDROID_HOME/licenses" || true
