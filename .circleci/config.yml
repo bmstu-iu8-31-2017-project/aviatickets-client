@@ -4,7 +4,7 @@
 
 general:
     artifacts:
-        - /home/ubuntu/AndroidApp/app/build/outputs/apk/
+        - /home/ubuntu/Avia/app/build/outputs/apk/
 
 machine:
     environment:
