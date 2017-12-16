@@ -1,6 +1,6 @@
 language: android
 jdk: oraclejdk8
-sudo: required # false for Container-Based Infrastructure, required for Sudo-enabled Infrastructure
+sudo: false # false for Container-Based Infrastructure, required for Sudo-enabled Infrastructure
 
 before_cache:
   - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/modules-2/modules-2.lock # Avoid to repack it due locks
