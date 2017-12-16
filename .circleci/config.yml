@@ -1,27 +1,36 @@
-## Gradle opts + JDK 8
+#
+# Build configuration for Circle CI
+#
+
+general:
+    artifacts:
+        - /home/ubuntu/AndroidApp/app/build/outputs/apk/
+
 machine:
-  environment:
-    _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
-    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+    environment:
+        ANDROID_HOME: /usr/local/android-sdk-linux
+        GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+        _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
   java:
     version: oraclejdk8
-## Customize dependencies
+    
 dependencies:
-  pre:
-    - echo "y" | android update sdk --no-ui --all --filter tools,build-tools-26.0.2,android-25,extra-google-m2repository,extra-google-google_play_services,extra-android-m2repository
-    - sudo pip install -U crcmod
-  post:
-    - ./gradlew assembleVanillaDebug assembleVanillaDebugAndroidTest -PdisablePreDex
-    - echo $FIREBASE_SERVICE_ACCOUNT | base64 --decode > ${HOME}/client-secret.json
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
-    - sudo /opt/google-cloud-sdk/bin/gcloud config set project $FIREBASE_PROJECT
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components install beta
-    - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/client-secret.json
+    pre:
+        - echo y | android update sdk --no-ui --all --filter tools,platform-tools,android-25
+        - echo y | android update sdk --no-ui --all --filter build-tools-26.0.2
+        - echo y | android update sdk --no-ui --all --filter android-25
+        - echo y | android update sdk --no-ui --all --filter tools
+        - echo y | android update sdk --no-ui --all --filter extra-android-m2repository
+        - echo y | android update sdk --no-ui --all --filter extra-android-support
+        - echo y | android update sdk --no-ui --all --filter extra-google-google_play_services
+        - echo y | android update sdk --no-ui --all --filter extra-google-m2repository
+    override:
+        - chmod +x gradlew
+        - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
+
 test:
-  override:
-    - ./gradlew connectedCheck -PdisablePreDex
-    - echo "y" | sudo /opt/google-cloud-sdk/bin/gcloud beta test android run --app app/build/outputs/apk/app-vanilla-debug.apk --test app/build/outputs/apk/app-vanilla-debug-androidTest.apk --device-ids Nexus5 --os-version-ids 22 --locales en --orientations portrait
-  post:
-    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
-    - sudo /opt/google-cloud-sdk/bin/gsutil -m cp -r -U `sudo /opt/google-cloud-sdk/bin/gsutil ls gs://$TEST_LAB_BUCKET | tail -1` $CIRCLE_ARTIFACTS/ | true
+    override:
+        - (./gradlew assemble):
+            timeout: 360
+        # copy the build outputs to artifacts
+        - cp -r app/build/outputs $CIRCLE_ARTIFACTS 
