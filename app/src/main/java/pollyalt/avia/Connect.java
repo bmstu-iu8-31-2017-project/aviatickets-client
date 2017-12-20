@@ -14,9 +14,9 @@ public class Connect {
 
     /**
      * Метод подключения к серверу, отправки запроса и получения данных с сервера
-     * @param request Запрос
-     * @return Ответ с сервера
-     * @throws Exception
+     * @param request Строка параметров, введенных пользователем, для запроса к серверу
+     * @return Строка данных, полученных с сервера
+     * @throws Exception В случае неудачи при подключении к серверу или получении данных с сервера
      */
     public String ConnectToServer(String... request)throws Exception {
         url += request[0];

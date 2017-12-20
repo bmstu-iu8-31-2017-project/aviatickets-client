@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * Класс для создания окна вывода полученных рейсов с сервера
+ *Операция(Activity) для создания окна вывода полученных рейсов с сервера
  */
 public class ResultActivity extends Activity {
 
@@ -29,8 +29,9 @@ public class ResultActivity extends Activity {
     private Button Back;
 
     /**
-     * Метод для создания окна и вывода данных
-     * @param savedInstanceState
+     * Метод для инициализации ключевых компонентов операции и обработки данных
+     * Вызывается при создании окна
+     * @param savedInstanceState Сохраненные данные для восстановления предыдущего состояния окна
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +105,7 @@ public class ResultActivity extends Activity {
 
     /**
      * Метод загрузки изображения
-     * @param str название изображения
+     * @param str Название изображения
      */
     private void SetImage(String str) {
         str = str.substring(1);

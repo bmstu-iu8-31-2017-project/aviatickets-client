@@ -18,6 +18,7 @@ import android.content.DialogInterface;
  * Операция(Activity) для создания главного окна
  */
 public class MainActivity extends AppCompatActivity {
+
     private Calendar myCalendar;
     private EditText From;
     private EditText Where;
@@ -27,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private int Year, Month, Day;
 
     /**
-     * Метод для создания окна и обработки данных
-     * @param savedInstanceState
+     * Метод для инициализации ключевых компонентов операции и обработки данных
+     * Вызывается при создании окна
+     * @param savedInstanceState Сохраненные данные для восстановления предыдущего состояния окна
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Метод вывода окна Календаря и получения выбранной даты
-     * Инициализирует параметр класса When
-     * @param view
+     * @param view Компонента, которая вызывает метод
      */
     public void setDate(View view) {
         if(When.isEmpty())
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Метод запуска окна Результата
-     * @param extra строка запроса
+     * @param extra Строка полученных данных с сервера
      */
     private void launchActivity(String extra) {
         Intent intent = new Intent(this, ResultActivity.class);
@@ -109,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
     private class Handle extends AsyncTask<String, Void, String> {
         /**
          * Метод служит для создания подключения
-         * @param arg
-         * @return полученные данные от сервера
+         * @param arg Строка параметров для запроса на сервер
+         * @return Строка полученных данных с сервера
          */
         @Override
         protected String doInBackground(String... arg) {
@@ -137,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Метод для преобразования строки в запрос
-     * @param params запрашиваемые параметры
-     * @return строка-запрос
+     * @param params Запрашиваемые параметры, введенные пользователем
+     * @return Строка для отправления запроса на сервер
      */
     private String StringToRequest(String[] params) {
         String str = "/?from=" + params[0] + "&where=" + params[1] + "&when=" + params[2];
@@ -146,8 +147,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Метод для создания сообщений об ошибках
-     * @param msg передаваемое сообщение
+     * Метод для создания окна сообщений об ошибках
+     * @param msg Строка - сообщение, которое будет выведено в окне
      */
     private void AlertD(String msg) {
         AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
